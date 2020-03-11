@@ -52,7 +52,25 @@ public final class ConversionUtils {
                     throw new ConversionException(
                             DefaultI18nContext.getInstance().i18n("Invalid range: {0}.", range.toString()));
                 }
-                pageRangeSet.add(range);
+
+		// Change request #2 : allowing overlapping page range merges
+		if (pageRangeSet.size() > 0)
+                {
+		    for (PageRange pr : pageRangeSet)
+		    {
+		        if (range.getStart() >= pr.getStart() && range.getEnd() <= pr.getEnd())
+			{
+                            continue;
+                        }
+                        pageRangeSet.add(range);
+                    }
+                }
+                else
+                {
+		    // no change for the existing method(when no overlapping)
+		    pageRangeSet.add(range);
+                }
+                
             }
             return pageRangeSet;
         }
