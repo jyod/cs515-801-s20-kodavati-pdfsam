@@ -55,15 +55,7 @@ public class RadioButtonDrivenTextFieldsPane extends GridPane {
         GridPane.setHalignment(radio, HPos.LEFT);
         GridPane.setHalignment(field, HPos.LEFT);
         GridPane.setFillWidth(field, true);
-        field.setPrefWidth(300);
-        field.setDisable(true);
-        radio.selectedProperty().addListener((o, oldVal, newVal) -> {
-            field.setDisable(!newVal);
-            if (newVal) {
-                field.requestFocus();
-            }
-        });
-        radio.setToggleGroup(group);
+        setFieldAndRadio(radio, field);
         add(radio, 0, rows);
         add(field, 1, rows);
         if (nonNull(helpIcon)) {
@@ -72,5 +64,25 @@ public class RadioButtonDrivenTextFieldsPane extends GridPane {
         rows++;
 
     }
+
+	private void setFieldAndRadio(RadioButton radio, Region field) {
+		setField(field);
+        setRadio(radio, field);
+	}
+
+	private void setField(Region field) {
+		field.setPrefWidth(300);
+        field.setDisable(true);
+	}
+
+	private void setRadio(RadioButton radio, Region field) {
+		radio.selectedProperty().addListener((o, oldVal, newVal) -> {
+            field.setDisable(!newVal);
+            if (newVal) {
+                field.requestFocus();
+            }
+        });
+        radio.setToggleGroup(group);
+	}
 
 }
