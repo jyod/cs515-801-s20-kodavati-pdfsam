@@ -29,49 +29,57 @@ import static org.sejda.commons.util.RequireUtils.requireNotNullArg;
  */
 public final class ModuleDescriptorBuilder {
 
-    private ModuleCategory category;
-    private ModuleInputOutputType[] inputTypes;
-    private String name;
-    private String description;
-    private int priority = ModulePriority.DEFAULT.getPriority();
-    private String supportURL;
+    public class Data {
+        public ModuleCategory category;
+        public ModuleInputOutputType[] inputTypes;
+        public String name;
+        public String description;
+        public int priority;
+        public String supportURL;
+
+        public Data(int priority) {
+            this.priority = priority;
+        }
+    }
+
+    private Data data =  new Data(ModulePriority.DEFAULT.getPriority());
 
     private ModuleDescriptorBuilder() {
         // hide
     }
 
     public ModuleDescriptorBuilder category(ModuleCategory category) {
-        this.category = category;
+        this.data.category = category;
         return this;
     }
 
     public ModuleDescriptorBuilder inputTypes(ModuleInputOutputType... inputTypes) {
-        this.inputTypes = inputTypes;
+        this.data.inputTypes = inputTypes;
         return this;
     }
 
     public ModuleDescriptorBuilder name(String name) {
-        this.name = name;
+        this.data.name = name;
         return this;
     }
 
     public ModuleDescriptorBuilder description(String description) {
-        this.description = description;
+        this.data.description = description;
         return this;
     }
 
     public ModuleDescriptorBuilder priority(int priority) {
-        this.priority = priority;
+        this.data.priority = priority;
         return this;
     }
 
     public ModuleDescriptorBuilder priority(ModulePriority priority) {
-        this.priority = priority.getPriority();
+        this.data.priority = priority.getPriority();
         return this;
     }
 
     public ModuleDescriptorBuilder supportURL(String supportURL) {
-        this.supportURL = supportURL;
+        this.data.supportURL = supportURL;
         return this;
     }
 
@@ -85,9 +93,9 @@ public final class ModuleDescriptorBuilder {
     }
 
     public ModuleDescriptor build() {
-        requireNotNullArg(category, "Module category cannot be null");
-        requireNotBlank(name, "Module name cannot be blank");
-        requireNotBlank(description, "Module description cannot be blank");
-        return new ModuleDescriptor(category, name, description, priority, supportURL, inputTypes);
+        requireNotNullArg(data.category, "Module category cannot be null");
+        requireNotBlank(data.name, "Module name cannot be blank");
+        requireNotBlank(data.description, "Module description cannot be blank");
+        return new ModuleDescriptor(data.category, data.name, data.description, data.priority, data.supportURL, data.inputTypes);
     }
 }
